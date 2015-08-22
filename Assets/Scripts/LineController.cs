@@ -54,11 +54,6 @@ public class LineController : MonoBehaviour {
       lineRenderer.SetPosition(
         i, Vector3.Scale(screenSize, new Vector3(x, y, 0.0f)));
     }
-
-    // TODO(anokta): For test purposes only.
-    if (Input.GetKey(KeyCode.A)) {
-      AddSample(Random.Range(-1.0f, 1.0f));
-    } 
   }
 
   public void AddSample (float value) {
