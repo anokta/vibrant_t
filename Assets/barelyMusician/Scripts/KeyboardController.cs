@@ -30,6 +30,8 @@ public class KeyboardController : MonoBehaviour {
   Instrument instrument;
 
   public LineController lineController;
+  public Transform jawUp, jawDown;
+  float jawMaxAngle = 180.0f;
 
   public OscillatorType OscType {
     get { return ((SynthInstrument)instrument).OscType; }
@@ -45,6 +47,10 @@ public class KeyboardController : MonoBehaviour {
   }
   
   void Update () {
+    float angle = Mathf.Abs(lineController.nextSample) * jawMaxAngle;
+    jawUp.rotation = Quaternion.Slerp(jawUp.rotation, Quaternion.AngleAxis(angle, Vector3.forward), 4.0f * Time.deltaTime);
+    jawDown.rotation = Quaternion.Slerp(jawDown.rotation, Quaternion.AngleAxis(angle, Vector3.back), 4.0f * Time.deltaTime);
+
     // osc change.
     if(Input.GetKeyDown(KeyCode.Space)) {
       OscType = 

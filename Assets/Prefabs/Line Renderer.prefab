@@ -17,6 +17,35 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!1 &157842
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 406784}
+  - 114: {fileID: 11428406}
+  - 114: {fileID: 11416690}
+  m_Layer: 0
+  m_Name: Instrument
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &406784
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 157842}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 424434}
+  m_RootOrder: 0
 --- !u!4 &424434
 Transform:
   m_ObjectHideFlags: 1
@@ -26,9 +55,42 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 406784}
   m_Father: {fileID: 0}
   m_RootOrder: 0
+--- !u!114 &11416690
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 157842}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d16b89ef29f63684f90c24669fc55264, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fundamentalIndex: 3
+  lineController: {fileID: 11441400}
+--- !u!114 &11428406
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 157842}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d6fec5683cfe37149bfa7b13d867f4cf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lastOutput: 0
+  attack: 0
+  decay: 0
+  sustain: 1
+  release: .100000001
+  volume: .100000001
+  voiceCount: 40
+  oscType: 3
 --- !u!114 &11441400
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -42,7 +104,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   frame:
     serializedVersion: 2
-    x: 0
+    x: .25
     y: 0
     width: 1
     height: .5

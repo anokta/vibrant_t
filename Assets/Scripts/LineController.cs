@@ -15,11 +15,14 @@ public class LineController : MonoBehaviour {
   // Line renderer instance.
   private LineRenderer lineRenderer = null;
 
-  // Next sample to be added to the samples.
-  private float nextSample = 0.0f;
-
   // Last time in miliseconds when the next sample was added.
   private float lastSampleTime = 0.0f;
+  
+  // Next sample to be added to |samples|.
+  public float nextSample = 0.0f;
+
+  // Number of waiting samples to be added to |samples|.
+  private int numNextSamples = 0;
  
   // Line samples.
   private List<float> samples = null;
@@ -46,6 +49,7 @@ public class LineController : MonoBehaviour {
       samples.Insert(0, 0.5f * nextSample);
       lastSampleTime = Time.time;
       nextSample = 0.0f;
+      numNextSamples = 0;
     }
     // Update the line with the current samples.
     for (int i = 0; i < resolution + 1; ++i) {
@@ -57,6 +61,7 @@ public class LineController : MonoBehaviour {
   }
 
   public void AddSample (float value) {
-    nextSample = value;
+    nextSample = (nextSample * numNextSamples + value) / (numNextSamples + 1);
+    ++numNextSamples;
   }
 }
