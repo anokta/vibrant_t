@@ -4,6 +4,8 @@ using BarelyAPI;
 
 public class MonsterController : MonoBehaviour {
 
+  public GUIText speechGui;
+
   public Transform jawUp;
   public Transform jawDown;
 
@@ -35,6 +37,7 @@ public class MonsterController : MonoBehaviour {
 	void Update () {
     UpdateJaw(MouthOutput);
     if(currentSpeech.Length > 0) {
+      speechGui.text = "";
       StartCoroutine(StartSpeaking(currentSpeech));
       currentSpeech = "";
     }
@@ -69,6 +72,7 @@ public class MonsterController : MonoBehaviour {
       Note note = 
         new Note(noteIndex, RandomNumber.NextFloat(0.9f, 1.0f) * speakLoudness);
       instrument.PlayNote(note);
+      speechGui.text += " " + word;
       yield return new WaitForSeconds(word.Length * speakSpeed);
       instrument.PlayNote(new Note(note.Index, 0.0f));
       yield return new WaitForSeconds(RandomNumber.NextFloat() * speakSpeed);

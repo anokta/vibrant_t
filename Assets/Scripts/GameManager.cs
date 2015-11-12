@@ -6,6 +6,11 @@ public class GameManager : MonoBehaviour {
 
   public GameObject monsterPrefab;
 
+  public GUIText monsterSpeechGui;
+  public string[] monsterLines;
+  public string[] monsterRandomLinebreaks;
+  private int currentMonsterLine = 0;
+
   public GameObject groundPrefab;
 
   public int tempo = 124;
@@ -25,6 +30,7 @@ public class GameManager : MonoBehaviour {
     cameraController = GetComponent<CameraController>();
     monster = 
       GameObject.Instantiate(monsterPrefab).GetComponent<MonsterController>();
+    monster.speechGui = monsterSpeechGui;
     monster.SetLeftEnd(cameraController.ScreenLeft);
     monster.speakSpeed = 8.0f / tempo;
     line = GameObject.Instantiate(groundPrefab).GetComponent<LineController>();
@@ -38,6 +44,14 @@ public class GameManager : MonoBehaviour {
   }
 
   void OnNextBar(Sequencer sequencer) {
-    monster.Speak("Hi there folk!");
+    string speech = "";
+    if(RandomNumber.NextFloat() < 0.2f) {
+      speech = monsterRandomLinebreaks[RandomNumber.NextInt(0, 
+        monsterRandomLinebreaks.Length)];
+    } else {
+      speech = monsterLines[(int)Mathf.Min(monsterLines.Length - 1, 
+        currentMonsterLine++)];
+    }
+    monster.Speak(speech);
   }
 }
