@@ -59,9 +59,6 @@ public class Sampler : UGen {
   }
 
   public override float Next () {
-    output = sampleData[(int)(phase)];
-
-    phase += (frequency / rootFrequency) * samplingRatio;
     if (phase >= sampleData.Length) {
       if (loop) {
         phase -= sampleData.Length;
@@ -69,6 +66,9 @@ public class Sampler : UGen {
         return 0.0f;
       }
     }
+    output = sampleData[(int)(phase)];
+
+    phase += (frequency / rootFrequency) * samplingRatio;
 
     return output;
   }
