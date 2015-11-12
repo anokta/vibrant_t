@@ -19,6 +19,7 @@ public class MonsterController : MonoBehaviour {
   private ModeGenerator scale;
 
   private string currentSpeech = "";
+  private bool shouldSpeak = false;
 
   public float MouthOutput {
     get { return 3.0f * instrument.lastOutput; }
@@ -27,24 +28,27 @@ public class MonsterController : MonoBehaviour {
   const float jawMaxAngle = 180.0f;
 
   // Use this for initialization
-  void Start () {
+  void Start() {
+    instrument.StopAllNotes();
     markov = new MarkovChain(8);
     scale = new ModeGenerator();
     scale.SetScale(MusicalScale.Major, MusicalMode.Dorian);
   }
-	
-	// Update is called once per frame
-	void Update () {
+
+  // Update is called once per frame
+  void Update() {
     UpdateJaw(MouthOutput);
-    if(currentSpeech.Length > 0) {
+    if (shouldSpeak) {
       speechGui.text = "";
-      StartCoroutine(StartSpeaking(currentSpeech));
-      currentSpeech = "";
+      if (currentSpeech.Length > 0) {
+        StartCoroutine(StartSpeaking(currentSpeech));
+      }
+      shouldSpeak = false;
     }
-	}
+  }
 
   public void SetLeftEnd(Vector3 position) {
-    transform.position = 
+    transform.position =
       position + 1.5f * Vector3.right * transform.lossyScale.x;
   }
 
@@ -54,14 +58,15 @@ public class MonsterController : MonoBehaviour {
 
   public void UpdateJaw(float sample) {
     float angle = Mathf.Abs(sample) * jawMaxAngle;
-    jawUp.rotation = Quaternion.Slerp(jawUp.rotation, 
+    jawUp.rotation = Quaternion.Slerp(jawUp.rotation,
       Quaternion.AngleAxis(angle, Vector3.forward), 4.0f * Time.deltaTime);
-    jawDown.rotation = Quaternion.Slerp(jawDown.rotation, 
+    jawDown.rotation = Quaternion.Slerp(jawDown.rotation,
       Quaternion.AngleAxis(angle, Vector3.back), 4.0f * Time.deltaTime);
   }
 
   public void Speak(string speech) {
     currentSpeech = speech;
+    shouldSpeak = true;
   }
 
   private IEnumerator StartSpeaking(string speech) {
@@ -69,7 +74,7 @@ public class MonsterController : MonoBehaviour {
       markov.GenerateNextState();
       float noteIndex =
         fundamentalIndex + scale.GetNoteOffset(markov.CurrentState);
-      Note note = 
+      Note note =
         new Note(noteIndex, RandomNumber.NextFloat(0.9f, 1.0f) * speakLoudness);
       instrument.PlayNote(note);
       speechGui.text += " " + word;

@@ -10,7 +10,7 @@ using BarelyAPI;
 
 public class KeyboardController : MonoBehaviour {
   public int fundamentalIndex = (int)NoteIndex.C4;
-  KeyCode[] keys = { 
+  KeyCode[] keys = {
     KeyCode.A,
     KeyCode.W,
     KeyCode.S,
@@ -18,7 +18,7 @@ public class KeyboardController : MonoBehaviour {
     KeyCode.D,
     KeyCode.F,
     KeyCode.T,
-    KeyCode.G, 
+    KeyCode.G,
     KeyCode.Y,
     KeyCode.H,
     KeyCode.U,
@@ -29,44 +29,38 @@ public class KeyboardController : MonoBehaviour {
   };
   Instrument instrument;
 
-  public LineController lineController;
+  public GUIText companionGui;
+  private int numKeysDown = 0;
+  private Color textColor;
 
   public OscillatorType OscType {
     get { return ((SynthInstrument)instrument).OscType; }
     set { ((SynthInstrument)instrument).OscType = value; }
   }
 
-  void Awake () {
+  void Awake() {
     instrument = GetComponent<Instrument>();
+    textColor = companionGui.color;
   }
-  
-  void Start () {
+
+  void Start() {
     instrument.StopAllNotes();
   }
-  
-  void Update () {
-    // osc change.
-    //if(Input.GetKeyDown(KeyCode.Space)) {
-    //  OscType = 
-    //    (OscillatorType)(((int)OscType + 1) % 
-    //                     System.Enum.GetNames(typeof(OscillatorType)).Length);
-    //}
-    // octave up-down
-    if (Input.GetKeyDown(KeyCode.Z)) {
-      fundamentalIndex = Mathf.Max(-36, fundamentalIndex - 12);
-      instrument.StopAllNotes();
-    } else if (Input.GetKeyDown(KeyCode.X)) {
-      fundamentalIndex = Mathf.Min(36, fundamentalIndex + 12);
-      instrument.StopAllNotes();
+
+  void Update() {
+    if (Input.anyKey) {
+      companionGui.text += "" + (char)RandomNumber.NextInt(97, 123);
     }
-    
-    // keys
-    for (int i = 0; i < keys.Length; i++) {
-      if (Input.GetKeyUp(keys[i])) {
-        instrument.PlayNote(new Note(fundamentalIndex + i, 0.0f));
-      } else if (Input.GetKeyDown(keys[i])) {
-        instrument.PlayNote(new Note(fundamentalIndex + i, 0.5f));
-      }
+    if (Input.anyKeyDown) {
+      instrument.PlayNote(new Note(0.0f, 0.4f));
+      numKeysDown++;
+      companionGui.color = 
+        textColor * (1.0f + Mathf.Min(0.2f, numKeysDown * 0.05f));
+    } else if (!Input.anyKey) {
+      instrument.PlayNote(new Note(0.0f, 0.0f));
+      companionGui.text = "";
+      companionGui.color = textColor;
+      numKeysDown = 0;
     }
   }
 }

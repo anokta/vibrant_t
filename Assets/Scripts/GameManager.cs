@@ -23,12 +23,14 @@ public class GameManager : MonoBehaviour {
 
   private LineController line;
 
+  private int countdown = 4;
+
   void Awake() {
     sequencer = GetComponent<Sequencer>();
     sequencer.tempo = tempo;
     sequencer.OnNextBar += OnNextBar;
     cameraController = GetComponent<CameraController>();
-    monster = 
+    monster =
       GameObject.Instantiate(monsterPrefab).GetComponent<MonsterController>();
     monster.speechGui = monsterSpeechGui;
     monster.SetLeftEnd(cameraController.ScreenLeft);
@@ -37,20 +39,24 @@ public class GameManager : MonoBehaviour {
     line.SetStartPoint(monster.GetRightEnd());
     line.SetLength(0.5f * cameraController.ScreenSize - monster.GetRightEnd());
   }
-  
-  // Update is called once per frame
+
   void Update() {
     line.AddSample(0.75f * monster.MouthOutput);
   }
 
   void OnNextBar(Sequencer sequencer) {
-    string speech = "";
-    if(RandomNumber.NextFloat() < 0.2f) {
-      speech = monsterRandomLinebreaks[RandomNumber.NextInt(0, 
+    if(countdown > 0) {
+      countdown--;
+      return;
+    }
+    string speech = monsterLines[(int)Mathf.Min(monsterLines.Length - 1,
+        currentMonsterLine)];
+    if (currentMonsterLine > 4 && speech.Length > 0
+        && RandomNumber.NextFloat() < 0.2f) {
+      speech = monsterRandomLinebreaks[RandomNumber.NextInt(0,
         monsterRandomLinebreaks.Length)];
     } else {
-      speech = monsterLines[(int)Mathf.Min(monsterLines.Length - 1, 
-        currentMonsterLine++)];
+      currentMonsterLine++;
     }
     monster.Speak(speech);
   }
