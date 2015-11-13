@@ -23,7 +23,7 @@ public class GameManager : MonoBehaviour {
 
   private LineController line;
 
-  private int countdown = 4;
+  private int countdown = 3;
 
   void Start() {
     sequencer = GetComponent<Sequencer>();
@@ -41,6 +41,9 @@ public class GameManager : MonoBehaviour {
   }
 
   void Update() {
+    if(Input.GetKeyDown(KeyCode.Escape)) {
+      Application.Quit();
+    }
     line.AddSample(0.75f * monster.MouthOutput);
   }
 
