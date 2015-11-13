@@ -55,7 +55,7 @@ public class KeyboardController : MonoBehaviour {
       instrument.PlayNote(new Note(0.0f, 0.4f));
       numKeysDown++;
       companionGui.color = 
-        textColor * (1.0f + Mathf.Min(0.2f, numKeysDown * 0.05f));
+        textColor * (1.0f + Mathf.Min(0.1f, numKeysDown * 0.05f));
     } else if (!Input.anyKey) {
       instrument.PlayNote(new Note(0.0f, 0.0f));
       companionGui.text = "";

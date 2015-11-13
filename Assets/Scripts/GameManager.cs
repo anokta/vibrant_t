@@ -25,7 +25,7 @@ public class GameManager : MonoBehaviour {
 
   private int countdown = 4;
 
-  void Awake() {
+  void Start() {
     sequencer = GetComponent<Sequencer>();
     sequencer.tempo = tempo;
     sequencer.OnNextBar += OnNextBar;

@@ -59,12 +59,12 @@ public class LineController : MonoBehaviour {
     }
   }
 
-  public void SetStartPoint(Vector2 start) {
+  public void SetStartPoint(Vector3 start) {
     frame.x = start.x;
     frame.y = start.y;
   }
 
-  public void SetLength(Vector2 size) {
+  public void SetLength(Vector3 size) {
     frame.width = size.x;
     frame.height = size.y;
   }
